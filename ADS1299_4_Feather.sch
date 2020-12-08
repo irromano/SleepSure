@@ -1764,7 +1764,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="JP3" library="adafruit" deviceset="PINHD-2X9" device="-BIG" value="2x9"/>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-LEDGER" device="">
 <attribute name="DESIGNER" value="Ian Romano"/>
-<attribute name="REV" value="2"/>
+<attribute name="REV" value="3"/>
 </part>
 <part name="C20" library="SparkFun-Capacitors" deviceset="10UF" device="-0805-10V-10%" value="100uF"/>
 <part name="C10" library="SparkFun-Capacitors" deviceset="10UF" device="-0805-10V-10%" value="10uF"/>
