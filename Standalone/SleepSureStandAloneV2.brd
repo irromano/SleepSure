@@ -4647,9 +4647,6 @@ einem neuen Namen ab.</description>
 <signal name="IO33_A9">
 <contactref element="X2" pad="9"/>
 </signal>
-<signal name="IO27_A10">
-<contactref element="X2" pad="12"/>
-</signal>
 <signal name="MISO">
 <contactref element="X2" pad="31"/>
 <contactref element="U1" pad="43"/>
@@ -5578,6 +5575,26 @@ einem neuen Namen ab.</description>
 </signal>
 <signal name="IO16">
 <contactref element="X2" pad="27"/>
+</signal>
+<signal name="ADS_START">
+<contactref element="U1" pad="38"/>
+<contactref element="X2" pad="12"/>
+<via x="22.5634" y="23.4696" extent="1-16" drill="0.35"/>
+<wire x1="26.762" y1="20.4905" x2="24.8993" y2="20.4905" width="0.1524" layer="16"/>
+<wire x1="24.8993" y1="20.4905" x2="24.257" y2="21.1328" width="0.1524" layer="16"/>
+<wire x1="24.257" y1="21.1328" x2="23.2156" y2="21.1328" width="0.1524" layer="16"/>
+<wire x1="23.2156" y1="21.1328" x2="22.5634" y2="21.785" width="0.1524" layer="16"/>
+<wire x1="22.5634" y1="21.785" x2="22.5634" y2="23.4696" width="0.1524" layer="16"/>
+<via x="30.2006" y="25.7556" extent="1-16" drill="0.35"/>
+<wire x1="39.925" y1="24.883" x2="39.925" y2="25.05360625" width="0.1524" layer="1"/>
+<wire x1="39.925" y1="25.05360625" x2="38.76510625" y2="26.2135" width="0.1524" layer="1"/>
+<wire x1="30.2006" y1="25.7556" x2="30.1829" y2="25.7379" width="0.1524" layer="2"/>
+<wire x1="30.1829" y1="25.7379" x2="24.8317" y2="25.7379" width="0.1524" layer="2"/>
+<wire x1="24.8317" y1="25.7379" x2="22.5634" y2="23.4696" width="0.1524" layer="2"/>
+<via x="38.76510625" y="26.2135" extent="1-16" drill="0.35"/>
+<wire x1="32.24880625" y1="25.7556" x2="30.2006" y2="25.7556" width="0.1524" layer="15"/>
+<wire x1="32.70670625" y1="26.2135" x2="32.24880625" y2="25.7556" width="0.1524" layer="15"/>
+<wire x1="38.76510625" y1="26.2135" x2="32.70670625" y2="26.2135" width="0.1524" layer="15"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
