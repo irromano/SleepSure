@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -5292,16 +5292,16 @@ With larger annulars</description>
 <part name="C16" library="SparkFun-Capacitors" deviceset="10UF" device="-0805-10V-10%" value="0.1uF"/>
 <part name="R20" library="SparkFun-Resistors" deviceset="RESISTOR" device="0805" value="1M"/>
 <part name="JP2" library="SleepSureLib" deviceset="PINHD-2X10" device="-BIG" package3d_urn="urn:adsk.eagle:package:6240766/1"/>
-<part name="U$44" library="SleepSureLib" deviceset="EXB-28V222JX" device=""/>
-<part name="U$23" library="SleepSureLib" deviceset="W2A45C103MAT2A" device=""/>
-<part name="U$45" library="SleepSureLib" deviceset="EXB-28V222JX" device=""/>
-<part name="U$46" library="SleepSureLib" deviceset="W2A45C103MAT2A" device=""/>
-<part name="U$47" library="SleepSureLib" deviceset="EXB-28V222JX" device=""/>
-<part name="U$48" library="SleepSureLib" deviceset="W2A45C103MAT2A" device=""/>
-<part name="U$49" library="SleepSureLib" deviceset="EXB-28V222JX" device=""/>
-<part name="U$50" library="SleepSureLib" deviceset="W2A45C103MAT2A" device=""/>
-<part name="U$51" library="SleepSureLib" deviceset="EXB-28V222JX" device=""/>
-<part name="U$52" library="SleepSureLib" deviceset="W2A45C103MAT2A" device=""/>
+<part name="U$44" library="SleepSureLib" deviceset="EXB-28V222JX" device="" value="2.2k"/>
+<part name="U$23" library="SleepSureLib" deviceset="W2A45C103MAT2A" device="" value="1nF"/>
+<part name="U$45" library="SleepSureLib" deviceset="EXB-28V222JX" device="" value="2.2k"/>
+<part name="U$46" library="SleepSureLib" deviceset="W2A45C103MAT2A" device="" value="1nF"/>
+<part name="U$47" library="SleepSureLib" deviceset="EXB-28V222JX" device="" value="2.2k"/>
+<part name="U$48" library="SleepSureLib" deviceset="W2A45C103MAT2A" device="" value="1nF"/>
+<part name="U$49" library="SleepSureLib" deviceset="EXB-28V222JX" device="" value="2.2k"/>
+<part name="U$50" library="SleepSureLib" deviceset="W2A45C103MAT2A" device="" value="1nF"/>
+<part name="U$51" library="SleepSureLib" deviceset="EXB-28V222JX" device="" value="2.2k"/>
+<part name="U$52" library="SleepSureLib" deviceset="W2A45C103MAT2A" device="" value="1nF"/>
 <part name="U$6" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.5"/>
 <part name="U$19" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.5"/>
 <part name="U4" library="microbuilder" deviceset="VREG_TPS6103X" device="" value="TPS61090RSAR"/>
@@ -5332,8 +5332,8 @@ With larger annulars</description>
 <part name="C22" library="SparkFun-Capacitors" deviceset="10UF" device="-0805-10V-10%" value="100uF"/>
 <part name="U$55" library="ADS_Feather" deviceset="ASPI-0628-6R8M-T1" device="" value="6.8uH"/>
 <part name="R5" library="SparkFun-Resistors" deviceset="RESISTOR" device="0805" value="200k"/>
-<part name="U$62" library="ADS_Feather" deviceset="MBR160HW" device=""/>
-<part name="U$66" library="ADS_Feather" deviceset="MBR160HW" device=""/>
+<part name="U$62" library="ADS_Feather" deviceset="MBR160HW" device="" value="MRB120"/>
+<part name="U$66" library="ADS_Feather" deviceset="MBR160HW" device="" value="MRB120"/>
 <part name="J1" library="ADS_Feather" deviceset="10118192-0002LF" device=""/>
 </parts>
 <sheets>
@@ -5488,14 +5488,14 @@ w/2A current</text>
 <attribute name="VALUE" x="168.656" y="109.22" size="1.27" layer="96"/>
 </instance>
 <instance part="U$12" gate="G$1" x="185.42" y="134.62" smashed="yes">
-<attribute name="VALUE" x="183.896" y="132.08" size="1.27" layer="96"/>
+<attribute name="VALUE" x="183.896" y="134.62" size="1.27" layer="96"/>
 </instance>
 <instance part="C2" gate="G$1" x="180.34" y="142.24" smashed="yes">
 <attribute name="NAME" x="178.05" y="143.49" size="1.27" layer="95" font="vector" rot="R90" align="center"/>
 <attribute name="VALUE" x="182.64" y="143.49" size="1.27" layer="96" font="vector" rot="R90" align="center"/>
 </instance>
 <instance part="U$17" gate="G$1" x="180.34" y="134.62" smashed="yes">
-<attribute name="VALUE" x="178.816" y="132.08" size="1.27" layer="96"/>
+<attribute name="VALUE" x="178.816" y="134.62" size="1.27" layer="96"/>
 </instance>
 <instance part="U$18" gate="G$1" x="172.72" y="134.62" smashed="yes">
 <attribute name="VALUE" x="171.196" y="135.636" size="1.27" layer="96"/>
@@ -6499,13 +6499,6 @@ w/2A current</text>
 <pinref part="X2" gate="G$1" pin="IO33/A1_5/X32N"/>
 </segment>
 </net>
-<net name="IO32_A7" class="0">
-<segment>
-<wire x1="78.74" y1="71.12" x2="91.44" y2="71.12" width="0.1524" layer="91"/>
-<label x="81.28" y="71.12" size="1.778" layer="95"/>
-<pinref part="X2" gate="G$1" pin="IO32/A1_4/X32P"/>
-</segment>
-</net>
 <net name="IO27_A10" class="0">
 <segment>
 <wire x1="78.74" y1="73.66" x2="91.44" y2="73.66" width="0.1524" layer="91"/>
@@ -6530,6 +6523,11 @@ w/2A current</text>
 <wire x1="78.74" y1="109.22" x2="91.44" y2="109.22" width="0.1524" layer="91"/>
 <label x="81.28" y="109.22" size="1.778" layer="95"/>
 <pinref part="X2" gate="G$1" pin="IO5"/>
+</segment>
+<segment>
+<pinref part="U1" gate="G$1" pin="SCLK"/>
+<wire x1="-340.36" y1="53.34" x2="-365.76" y2="53.34" width="0.1524" layer="91"/>
+<label x="-365.76" y="53.34" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="A4_IO36" class="0">
@@ -6610,32 +6608,11 @@ w/2A current</text>
 <pinref part="X2" gate="G$1" pin="IO12/A2_5"/>
 </segment>
 </net>
-<net name="IO15_A8" class="0">
-<segment>
-<wire x1="78.74" y1="99.06" x2="91.44" y2="99.06" width="0.1524" layer="91"/>
-<label x="81.28" y="99.06" size="1.778" layer="95"/>
-<pinref part="X2" gate="G$1" pin="IO15/A2_3"/>
-</segment>
-</net>
 <net name="IO21" class="0">
 <segment>
 <wire x1="78.74" y1="86.36" x2="91.44" y2="86.36" width="0.1524" layer="91"/>
 <label x="81.28" y="86.36" size="1.778" layer="95"/>
 <pinref part="X2" gate="G$1" pin="IO21"/>
-</segment>
-</net>
-<net name="IO14_A6" class="0">
-<segment>
-<wire x1="78.74" y1="101.6" x2="91.44" y2="101.6" width="0.1524" layer="91"/>
-<label x="81.28" y="101.6" size="1.778" layer="95"/>
-<pinref part="X2" gate="G$1" pin="IO14/A2_6"/>
-</segment>
-</net>
-<net name="SCLK" class="0">
-<segment>
-<pinref part="U1" gate="G$1" pin="SCLK"/>
-<wire x1="-340.36" y1="53.34" x2="-365.76" y2="53.34" width="0.1524" layer="91"/>
-<label x="-365.76" y="53.34" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="CLK0" class="0">
@@ -6655,6 +6632,11 @@ w/2A current</text>
 <pinref part="U1" gate="G$1" pin="!RESET"/>
 <wire x1="-340.36" y1="116.84" x2="-365.76" y2="116.84" width="0.1524" layer="91"/>
 <label x="-365.76" y="116.84" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="78.74" y1="71.12" x2="91.44" y2="71.12" width="0.1524" layer="91"/>
+<label x="81.28" y="71.12" size="1.778" layer="95"/>
+<pinref part="X2" gate="G$1" pin="IO32/A1_4/X32P"/>
 </segment>
 </net>
 <net name="IN1_N" class="1">
@@ -6983,26 +6965,21 @@ w/2A current</text>
 <label x="-274.32" y="121.92" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="78.74" y1="96.52" x2="91.44" y2="96.52" width="0.1524" layer="91"/>
-<label x="81.28" y="96.52" size="1.778" layer="95"/>
-<pinref part="X2" gate="G$1" pin="IO16"/>
+<wire x1="78.74" y1="99.06" x2="91.44" y2="99.06" width="0.1524" layer="91"/>
+<label x="81.28" y="99.06" size="1.778" layer="95"/>
+<pinref part="X2" gate="G$1" pin="IO15/A2_3"/>
 </segment>
 </net>
 <net name="ADS_CS" class="0">
-<segment>
-<wire x1="78.74" y1="116.84" x2="91.44" y2="116.84" width="0.1524" layer="91"/>
-<label x="81.28" y="116.84" size="1.778" layer="95"/>
-<pinref part="X2" gate="G$1" pin="IO0/A2_1"/>
-</segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="!CS"/>
 <wire x1="-340.36" y1="121.92" x2="-365.76" y2="121.92" width="0.1524" layer="91"/>
 <label x="-365.76" y="121.92" size="1.778" layer="95"/>
 </segment>
 <segment>
-<wire x1="124.46" y1="86.36" x2="137.16" y2="86.36" width="0.1524" layer="91"/>
-<label x="127" y="86.36" size="1.778" layer="95"/>
-<pinref part="Q2" gate="G$1" pin="C"/>
+<wire x1="78.74" y1="101.6" x2="91.44" y2="101.6" width="0.1524" layer="91"/>
+<label x="81.28" y="101.6" size="1.778" layer="95"/>
+<pinref part="X2" gate="G$1" pin="IO14/A2_6"/>
 </segment>
 </net>
 <net name="IN5_P" class="2">
@@ -7440,6 +7417,25 @@ w/2A current</text>
 <pinref part="IC1" gate="G$1" pin="D+"/>
 <wire x1="182.88" y1="127" x2="187.96" y2="127" width="0.1524" layer="91"/>
 <label x="172.72" y="121.92" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="GPIO0" class="0">
+<segment>
+<pinref part="X2" gate="G$1" pin="IO0/A2_1"/>
+<wire x1="78.74" y1="116.84" x2="91.44" y2="116.84" width="0.1524" layer="91"/>
+<label x="81.28" y="116.84" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="Q2" gate="G$1" pin="C"/>
+<wire x1="124.46" y1="86.36" x2="137.16" y2="86.36" width="0.1524" layer="91"/>
+<label x="127" y="86.36" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="IO16" class="0">
+<segment>
+<pinref part="X2" gate="G$1" pin="IO16"/>
+<wire x1="78.74" y1="96.52" x2="91.44" y2="96.52" width="0.1524" layer="91"/>
+<label x="81.28" y="96.52" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
