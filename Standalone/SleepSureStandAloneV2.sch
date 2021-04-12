@@ -6690,13 +6690,6 @@ w/2A current</text>
 <pinref part="X2" gate="G$1" pin="IO33/A1_5/X32N"/>
 </segment>
 </net>
-<net name="IO27_A10" class="0">
-<segment>
-<wire x1="78.74" y1="73.66" x2="91.44" y2="73.66" width="0.1524" layer="91"/>
-<label x="81.28" y="73.66" size="1.778" layer="95"/>
-<pinref part="X2" gate="G$1" pin="IO27/A2_7"/>
-</segment>
-</net>
 <net name="MISO" class="0">
 <segment>
 <wire x1="91.44" y1="88.9" x2="78.74" y2="88.9" width="0.1524" layer="91"/>
@@ -7627,6 +7620,18 @@ w/2A current</text>
 <pinref part="X2" gate="G$1" pin="IO16"/>
 <wire x1="78.74" y1="96.52" x2="91.44" y2="96.52" width="0.1524" layer="91"/>
 <label x="81.28" y="96.52" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="ADS_START" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="START"/>
+<wire x1="-340.36" y1="50.8" x2="-365.76" y2="50.8" width="0.1524" layer="91"/>
+<label x="-365.76" y="50.8" size="1.778" layer="95"/>
+</segment>
+<segment>
+<wire x1="78.74" y1="73.66" x2="91.44" y2="73.66" width="0.1524" layer="91"/>
+<label x="81.28" y="73.66" size="1.778" layer="95"/>
+<pinref part="X2" gate="G$1" pin="IO27/A2_7"/>
 </segment>
 </net>
 </nets>
