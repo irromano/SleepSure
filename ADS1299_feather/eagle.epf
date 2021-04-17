@@ -6,6 +6,7 @@ Desktop="Desktop"
 
 [Globals]
 AutoSaveProject=1
+UsedLibrary="C:/Users/Ian/Documents/EAGLE/libraries/ADS_Feather.lbr"
 UsedLibrary="C:/Users/Ian/Documents/EAGLE/libraries/SparkFun/SparkFun-LED.lbr"
 UsedLibrary="C:/Users/Ian/Documents/EAGLE/libraries/SparkFun/SparkFun-PowerSymbols.lbr"
 UsedLibrary="C:/Users/Ian/Documents/EAGLE/libraries/SparkFun/SparkFun-Resistors.lbr"
@@ -21,5 +22,5 @@ Type="Control Panel"
 Number=0
 
 [Desktop]
-Screen="2460 1203"
+Screen="2460 1807"
 Window="Win_1"
