@@ -8,7 +8,8 @@
 #endif
 
 BluetoothSerial SerialBT;
-int count = 65;
+//int count = 65;
+long count;
 
 void setup() {
   Serial.begin(9600);
@@ -17,9 +18,10 @@ void setup() {
 }
 
 void loop() {
-  if(count > 500) {
-    count = count-400;
-  }
+//  if(count > 500) {
+//    count = count-400;
+//  }
+  count = random(-2000,2001);
   String s = String(count);
   for(int i=0;i<s.length();i++) {
     SerialBT.write(int(s[i]));
@@ -32,5 +34,5 @@ void loop() {
 //  if (SerialBT.available()) {
 //    Serial.write(SerialBT.read());
 //  }
-  delay(100);
+  delay(20);
 }
