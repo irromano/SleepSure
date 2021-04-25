@@ -25,8 +25,8 @@ const byte WRET = 0b00000000;
 // SCK = 13
 // MISO [DOUT] = 12
 // MOSI [DIN] = 11
-const int CS = 10; //chip select pin
-const int DRDY = 9; //data ready pin
+const int CS = 14; //chip select pin
+const int DRDY = 15; //data ready pin
 
 const float tCLK = 0.000666;
 

@@ -3,24 +3,31 @@
 //  
 //  Created by Conor Russomanno on 6/17/13.
 //
+#include "arduino.h"
 
 #include <SPI.h>
 #include "pins_arduino.h"
 #include "ESP32ADS1299.h"
 
-void ADS1299::setup(int _DRDY, int _CS){
+void ADS1299::setup(int8_t _DRDY, int8_t _CS){
     
-    // **** ----- SPI Setup ----- **** //
-    
+    DRDY = _DRDY;
+    CS = _CS;
+    pinMode(DRDY, INPUT);
+    pinMode(CS, OUTPUT);
+    //Initialize SPI
+    _spi->begin();
+    _spi->setDataMode(SPI_MODE1);
+
     //Set clock speed to 80MHz
-    SPI.beginTransaction(SPISettings(80000000, MSBFIRST, SPI_MODE1));
+    //SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE1));
 
     // Set direction register for SCK and MOSI pin.
     // MISO pin automatically overrides to INPUT.
     // When the SS pin is set as OUTPUT, it can be used as
     // a general purpose output port (it doesn't influence
     // SPI operations).
-    
+    /*
     pinMode(SCK, OUTPUT);
     pinMode(MOSI, OUTPUT);
     pinMode(SS, OUTPUT);
@@ -28,7 +35,7 @@ void ADS1299::setup(int _DRDY, int _CS){
     digitalWrite(SCK, LOW);
     digitalWrite(MOSI, LOW);
     digitalWrite(SS, HIGH);
-    
+    */
     // Warning: if the CS pin ever becomes a LOW INPUT then SPI
     // automatically switches to Slave, so the data direction of
     // the CS pin MUST be kept as OUTPUT.
@@ -46,14 +53,6 @@ void ADS1299::setup(int _DRDY, int _CS){
     //set bit order
     //SPCR &= ~(_BV(DORD)); // SPI data format is MSB (pg. 25)
     
-    // **** ----- End of SPI Setup ----- **** //
-    
-    // initalize the  data ready and chip select pins:
-    DRDY = _DRDY;
-    CS = _CS;
-    pinMode(DRDY, INPUT);
-    pinMode(CS, OUTPUT);
-    
     tCLK = 0.000488; //488 ns (Datasheet, pg. 8)
     outputCount = 0;
 }
@@ -61,57 +60,57 @@ void ADS1299::setup(int _DRDY, int _CS){
 //System Commands
 void ADS1299::WAKEUP() {
     digitalWrite(CS, LOW); //Low to communicate
-    transfer(_WAKEUP);
+    _spi->transfer(_WAKEUP);
     digitalWrite(CS, HIGH); //High to end communication
     delay(4.0*tCLK);  //must way at least 4 tCLK cycles before sending another command (Datasheet, pg. 35)
 }
 void ADS1299::STANDBY() {
     digitalWrite(CS, LOW);
-    transfer(_STANDBY);
+    _spi->transfer(_STANDBY);
     digitalWrite(CS, HIGH);
 }
 void ADS1299::RESET() {
     digitalWrite(CS, LOW);
-    transfer(_RESET);
+    _spi->transfer(_RESET);
     delay(10);
 //    delay(18.0*tCLK); //must wait 18 tCLK cycles to execute this command (Datasheet, pg. 35)
     digitalWrite(CS, HIGH);
 }
 void ADS1299::START() {
     digitalWrite(CS, LOW);
-    transfer(_START);
+    _spi->transfer(_START);
     digitalWrite(CS, HIGH);
 }
 void ADS1299::STOP() {
     digitalWrite(CS, LOW);
-    transfer(_STOP);
+    _spi->transfer(_STOP);
     digitalWrite(CS, HIGH);
 }
 //Data Read Commands
 void ADS1299::RDATAC() {
     digitalWrite(CS, LOW);
-    transfer(_RDATAC);
+    _spi->transfer(_RDATAC);
     digitalWrite(CS, HIGH);
 }
 void ADS1299::SDATAC() {
     digitalWrite(CS, LOW);
-    transfer(_SDATAC);
+    _spi->transfer(_SDATAC);
     digitalWrite(CS, HIGH);
 }
 void ADS1299::RDATA() {
     digitalWrite(CS, LOW);
-    transfer(_RDATA);
+    _spi->transfer(_RDATA);
     digitalWrite(CS, HIGH);
 }
 
 //Register Read/Write Commands
 void ADS1299::getDeviceID() {
     digitalWrite(CS, LOW); //Low to communicated
-    transfer(_SDATAC); //SDATAC
-    transfer(_RREG); //RREG
-    transfer(0x00); //Asking for 1 byte
-    byte data = transfer(0x00); // byte to read (hopefully 0b???11110)
-    transfer(_RDATAC); //turn read data continuous back on
+    _spi->transfer(_SDATAC); //SDATAC
+    _spi->transfer(_RREG); //RREG
+    _spi->transfer(0x00); //Asking for 1 byte
+    byte data = _spi->transfer(0x00); // byte to read (hopefully 0b???11110)
+    _spi->transfer(_RDATAC); //turn read data continuous back on
     digitalWrite(CS, HIGH); //Low to communicated
     Serial.println(data, BIN);
 }
@@ -119,10 +118,10 @@ void ADS1299::getDeviceID() {
 void ADS1299::RREG(byte _address) {
     byte opcode1 = _RREG + _address; //001rrrrr; _RREG = 00100000 and _address = rrrrr
     digitalWrite(CS, LOW); //Low to communicated
-    transfer(_SDATAC); //SDATAC
-    transfer(opcode1); //RREG
-    transfer(0x00); //opcode2
-    byte data = transfer(0x00); // returned byte should match default of register map unless edited manually (Datasheet, pg.39)
+    _spi->transfer(_SDATAC); //SDATAC
+    _spi->transfer(opcode1); //RREG
+    _spi->transfer(0x00); //opcode2
+    byte data = _spi->transfer(0x00); // returned byte should match default of register map unless edited manually (Datasheet, pg.39)
     printRegisterName(_address);
     Serial.print("0x");
     if(_address<16) Serial.print("0");
@@ -136,7 +135,7 @@ void ADS1299::RREG(byte _address) {
         Serial.print(bitRead(data, 7-j), BIN);
         if(j!=7) Serial.print(", ");
     }
-    transfer(_RDATAC); //turn read data continuous back on
+    _spi->transfer(_RDATAC); //turn read data continuous back on
     digitalWrite(CS, HIGH); //High to end communication
     Serial.println();
 }
@@ -144,11 +143,11 @@ void ADS1299::RREG(byte _address) {
 void ADS1299::RREG(byte _address, byte _numRegistersMinusOne) {
     byte opcode1 = _RREG + _address; //001rrrrr; _RREG = 00100000 and _address = rrrrr
     digitalWrite(CS, LOW); //Low to communicated
-    transfer(_SDATAC); //SDATAC
-    transfer(opcode1); //RREG
-    transfer(_numRegistersMinusOne); //opcode2
+    _spi->transfer(_SDATAC); //SDATAC
+    _spi->transfer(opcode1); //RREG
+    _spi->transfer(_numRegistersMinusOne); //opcode2
     for(byte i = 0; i <= _numRegistersMinusOne; i++){
-        byte data = transfer(0x00); // returned byte should match default of register map unless previously edited manually (Datasheet, pg.39)
+        byte data = _spi->transfer(0x00); // returned byte should match default of register map unless previously edited manually (Datasheet, pg.39)
         printRegisterName(i);
         Serial.print("0x");
         if(i<16) Serial.print("0"); //lead with 0 if value is between 0x00-0x0F to ensure 2 digit format
@@ -164,18 +163,18 @@ void ADS1299::RREG(byte _address, byte _numRegistersMinusOne) {
         }
         Serial.println();
     }
-    transfer(_RDATAC); //turn read data continuous back on
+    _spi->transfer(_RDATAC); //turn read data continuous back on
     digitalWrite(CS, HIGH); //High to end communication
 }
 
 void ADS1299::WREG(byte _address, byte _value) {
     byte opcode1 = _WREG + _address; //001rrrrr; _RREG = 00100000 and _address = rrrrr
     digitalWrite(CS, LOW); //Low to communicated
-    transfer(_SDATAC); //SDATAC
-    transfer(opcode1);
-    transfer(0x00);
-    transfer(_value);
-    transfer(_RDATAC);
+    _spi->transfer(_SDATAC); //SDATAC
+    _spi->transfer(opcode1);
+    _spi->transfer(0x00);
+    _spi->transfer(_value);
+    _spi->transfer(_RDATAC);
     digitalWrite(CS, HIGH); //Low to communicated
     Serial.print("Register 0x");
     Serial.print(_address, HEX);
@@ -194,7 +193,7 @@ void ADS1299::updateData(){
         long dataPacket;
         for(int i = 0; i<9; i++){
             for(int j = 0; j<3; j++){
-                byte dataByte = transfer(0x00);
+                byte dataByte = _spi->transfer(0x00);
                 dataPacket = (dataPacket<<8) | dataByte;
             }
 //            output[outputCount][i] = dataPacket;
@@ -291,70 +290,10 @@ void ADS1299::printRegisterName(byte _address) {
 }
 
 //SPI communication methods
-byte ADS1299::transfer(byte _data) {
+/*byte ADS1299::transfer(byte _data) {
     return SPI.transfer(_data);
     /*SPDR = _data;
     while (!(SPSR & _BV(SPIF)))
         ;
-    return SPDR;*/
-}
-
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-//-------------------------------------------------------------------//
-
-////UNNECESSARY SPI-ARDUINO METHODS
-//void ADS1299::attachInterrupt() {
-//    SPCR |= _BV(SPIE);
-//}
-//
-//void ADS1299::detachInterrupt() {
-//    SPCR &= ~_BV(SPIE);
-//}
-//
-//void ADS1299::begin() {
-//    // Set direction register for SCK and MOSI pin.
-//    // MISO pin automatically overrides to INPUT.
-//    // When the SS pin is set as OUTPUT, it can be used as
-//    // a general purpose output port (it doesn't influence
-//    // SPI operations).
-//
-//    pinMode(SCK, OUTPUT);
-//    pinMode(MOSI, OUTPUT);
-//    pinMode(SS, OUTPUT);
-//
-//    digitalWrite(SCK, LOW);
-//    digitalWrite(MOSI, LOW);
-//    digitalWrite(SS, HIGH);
-//
-//    // Warning: if the SS pin ever becomes a LOW INPUT then SPI
-//    // automatically switches to Slave, so the data direction of
-//    // the SS pin MUST be kept as OUTPUT.
-//    SPCR |= _BV(MSTR);
-//    SPCR |= _BV(SPE);
-//}
-//
-//void ADS1299::end() {
-//    SPCR &= ~_BV(SPE);
-//}
-//
-////void ADS1299::setBitOrder(uint8_t bitOrder)
-////{
-////    if(bitOrder == LSBFIRST) {
-////        SPCR |= _BV(DORD);
-////    } else {
-////        SPCR &= ~(_BV(DORD));
-////    }
-////}
-////
-////void ADS1299::setDataMode(uint8_t mode)
-////{
-////    SPCR = (SPCR & ~SPI_MODE_MASK) | mode;
-////}
-////
-////void ADS1299::setClockDivider(uint8_t rate)
-////{
-////    SPCR = (SPCR & ~SPI_CLOCK_MASK) | (rate & SPI_CLOCK_MASK);
-////    SPSR = (SPSR & ~SPI_2XCLOCK_MASK) | ((rate >> 2) & SPI_2XCLOCK_MASK);
-//}
-
+    return SPDR;
+}*/

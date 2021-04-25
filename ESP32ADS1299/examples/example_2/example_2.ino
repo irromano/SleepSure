@@ -39,7 +39,7 @@ void setup() {
   Serial.println();
   Serial.println("ADS1299-bridge has started!");
   
-  ADS.setup(9, 10); // (DRDY pin, CS pin);
+  ADS.setup(15, 14); // (DRDY pin, CS pin);
   delay(10);  //delay to ensure connection
   
   ADS.RESET();

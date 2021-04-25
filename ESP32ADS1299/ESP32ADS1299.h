@@ -8,15 +8,16 @@
 #define ____ADS1299__
 
 #include <stdio.h>
-#include <Arduino.h>
-#include <avr/pgmspace.h>
+#include "Arduino.h"
+#include <Adafruit_Sensor.h>
+#include <SPI.h>
 #include "Definitions.h"
 
 
 class ADS1299 {
 public:
     
-    void setup(int _DRDY, int _CS);
+    void setup(int8_t _DRDY, int8_t _CS);
     
     //ADS1299 SPI Command Definitions (Datasheet, Pg. 35)
     //System Commands
@@ -44,7 +45,7 @@ public:
     void updateData();
     
     //SPI Arduino Library Stuff
-    byte transfer(byte _data);
+    /*byte transfer(byte _data);*/
 
     //------------------------//
     void attachInterrupt();
@@ -57,11 +58,13 @@ public:
     //------------------------//
     
     float tCLK;
-    int DRDY, CS; //pin numbers for "Data Ready" (DRDY) and "Chip Select" CS (Datasheet, pg. 26)
+    int8_t DRDY, CS; //pin numbers for "Data Ready" (DRDY) and "Chip Select" CS
+    int32_t _sensorID;
+
+    int8_t outputCount;
     
-    int outputCount;
-    
-//    vector<String> registers;
+protected:
+    SPIClass *_spi = &SPI;
     
 };
 
