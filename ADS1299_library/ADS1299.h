@@ -9,8 +9,8 @@
  * Author: Ian Romano
  ***************************************************************************/
 
-#ifndef __BME280_H__
-#define __BME280_H__
+#ifndef __ADS1299_H__
+#define __ADS1299_H__
 
 #include "Arduino.h"
 #include <SPI.h>
@@ -52,7 +52,7 @@ enum {
     ADS1299_REGISTER_MISC2 = 0x16,
     ADS1299_REGISTER_CONFIG4 = 0x17,
 
-    /*** ADS1299 Commands (p. 40)***/
+    /*** ADS1299 Commands ***/
     //System Commands
     ADS1299_COMMAND_WAKEUP = 0x02,
     ADS1299_COMMAND_STANDBY = 0x04,
@@ -67,6 +67,10 @@ enum {
     ADS1299_COMMAND_RREG = 0x20,
     ADS1299_COMMAND_WREG = 0x40,
 
+    /*** ADS1299 IDs ***/
+    ADS1299_4_ID = 0x1C,
+    ADS1299_6_ID = 0x1D,
+    ADS1299_ID = 0x1E,
     ADS1299_SPI_FREQ = 4000000
 };
 
@@ -82,7 +86,8 @@ class SleepSure_ADS1299
 
         bool begin();
         uint8_t command(uint8_t);
-        uint8_t read8(uint8_t reg);
+        uint8_t read(uint8_t reg);
+        void write(uint8_t reg, uint8_t data);
         uint8_t spixfer(uint8_t x);
         uint8_t getID();
         
@@ -98,6 +103,8 @@ class SleepSure_ADS1299
 
     protected:
         uint8_t _sensorID;
+
+        uint8_t readWrite(uint8_t reg, uint8_t data, uint8_t cmd);
 };
 
 #endif
