@@ -8,31 +8,53 @@
 #endif
 
 BluetoothSerial SerialBT;
-//int count = 65;
-long count;
+int counts[8];
+bool synced = false;
+int recv;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   SerialBT.begin("SleepSure"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
 }
 
-void loop() {
-//  if(count > 500) {
-//    count = count-400;
-//  }
-  count = random(-2000,2001);
-  String s = String(count);
-  for(int i=0;i<s.length();i++) {
-    SerialBT.write(int(s[i]));
+void getData(int nums[]) {
+  for(int i=0; i<8;i++) {
+    nums[i] = random(-2000,2001);
   }
-  SerialBT.write(10);
-  count++;
-//  if (Serial.available()) {
-//    SerialBT.write(Serial.read());
-//  }
-//  if (SerialBT.available()) {
-//    Serial.write(SerialBT.read());
-//  }
-  delay(20);
+}
+
+void loop() {
+  // Do not start sending data unless the receiver is ready
+  if(synced) {
+    getData(counts);
+    // Iterate through each channel and send the data one byte at a time
+    // If the data takes only one byte, pad it with 0x00. The data from each channel with its padding will always be 3 bytes
+    for(int i=0; i<8;i++) {
+      if(counts[i] < 256) {
+        SerialBT.write(counts[i]);
+        SerialBT.write(0); 
+      }
+      else {
+        SerialBT.write(counts[i]>>8);
+        SerialBT.write(counts[i] & 0xff);
+      }
+      SerialBT.write(0);
+    }
+    // After all the data is sent, mark the end of the data with 0x0010
+    SerialBT.write(0);
+    SerialBT.write(10);
+    delay(3);
+  }
+  else {
+    // Wait for the receiver to send 0xff
+    if(SerialBT.available()) {
+      recv = SerialBT.read();
+      if (recv == 255) {
+        synced=true;
+        Serial.println("Synced!");
+      }
+      delay(10);
+    }
+  }
 }
