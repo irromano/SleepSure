@@ -1,4 +1,4 @@
-# Receives data from bluetooth over COM3
+# Receives data from bluetooth over COM port
 # Author: Matias Saavedra Silva
 import serial
 import time
@@ -7,10 +7,13 @@ import serial.tools.list_ports
 count = 0
 filename = "Data/data"
 fileNum = 0
-file = open(filename+str(fileNum)+".txt", "w")
-fileLength = 100 # Max entries in a file
+# Create file for each channel
+files = []
+for i in range(8):
+    files.append(open(filename+"_chan"+str(i)+"_"+str(fileNum)+".txt", "w"))
+fileLength = 4096 # Max entries in a file
 
-#s.write(b"File complete!")
+# Check each COM port associated with Bluetooth devices until the test message is sent
 def findCOM():
     possiblePorts = []
     comPorts=serial.tools.list_ports.comports()
@@ -21,7 +24,7 @@ def findCOM():
         s = serial.Serial(i, 115200, timeout=1, write_timeout=1) # timeout?
         print("Listening on " + s.portstr)
         try:
-            s.write(b"Hello!")
+            s.write(b"\xff")
         except serial.serialutil.SerialTimeoutException:
             print("Connection Unsuccessful")
             s.close()
@@ -32,25 +35,47 @@ def findCOM():
     exit()
 
 print("SleepSure Receiver")
+channels = [0,0,0,0,0,0,0,0] # Data from each channel
 s = findCOM()
 start = time.time()
 while(1):
-    time.sleep(.02)
-    recv = s.readline()[:-1].decode() # Remove newline character
-    if len(recv) > 0:
-        #print(recv)
-        file.write(str(recv)+'\n')
+    # Read 26 bytes of data. Data for each channel is 3 bytes plus 2 bytes to show the end of the packet
+    recv=s.read(26)
+    # Check that the packet is closed correctly
+    if recv[-2:] == b'\x00\x0a':
+        data = recv[:-2]
+    else:
+        print("Error!")
+        print(recv)
+        break
+    for i in range(0, len(data), 3):
+        # If the data is one byte it will be padded with 0x0000. 2 bytes of data are padded with just 0x00
+        if data[i+1:i+3] == b'\x00\x00':
+            toSave = data[i]
+        elif data[i+2] == 0:
+            toSave = int.from_bytes(data[i:i+2], 'big')
+        else:
+            print("Error!")
+            print(data)
+            break
+        channels[(i+1)//3] = toSave
+    if len(data) > 0:
+        for num, i in enumerate(channels):
+            #print("Channel " + str(num) + ": " + str(i))
+            files[num].write(str(i)+'\n')
         count = count + 1
         # When file is full close and create next data file
         if count == fileLength:
             print(time.time()-start)
             start = time.time()
-            file.close()
+            for i in files:
+                i.close()
             if fileNum == 7:
                 break
             else:
                 fileNum = fileNum + 1
-                file = open(filename+str(fileNum)+".txt", "w")
+                for i in range(8):
+                    files[i] = open(filename+"_chan"+str(i)+"_"+str(fileNum)+".txt", "w")
                 count = 0
     if recv == "exit":
         break
