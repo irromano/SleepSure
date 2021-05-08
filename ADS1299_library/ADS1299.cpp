@@ -47,7 +47,6 @@ bool SleepSure_ADS1299::begin()
     command(ADS1299_COMMAND_RESET);
 
     _sensorID = read(ADS1299_REGISTER_ID);
-    uint8_t sensorCheck = _sensorID & 0x1F;
     write(ADS1299_REGISTER_CONFIG3, 0xE0);     //Using Internal Reference, setting PDB_REFBUF = 1
     write(ADS1299_REGISTER_CONFIG1, 0x96);      //Set Device for DR = fmod / 4096
     write(ADS1299_REGISTER_CONFIG2, 0xC0);
@@ -62,9 +61,28 @@ bool SleepSure_ADS1299::begin()
     write(ADS1299_REGISTER_CH8SET, 0x01);
 
     command(ADS1299_COMMAND_START);
+    delay(10);
 
+    int testChannels[8];
+    readChannels(testChannels, 8);
+
+    command(ADS1299_COMMAND_SDATAC);
+    write(ADS1299_REGISTER_CONFIG2, 0xD0);
+    write(ADS1299_REGISTER_CH1SET, 0x05);
+    write(ADS1299_REGISTER_CH2SET, 0x05);
+    write(ADS1299_REGISTER_CH3SET, 0x05);
+    write(ADS1299_REGISTER_CH4SET, 0x05);
+    write(ADS1299_REGISTER_CH5SET, 0x05);
+    write(ADS1299_REGISTER_CH6SET, 0x05);
+    write(ADS1299_REGISTER_CH7SET, 0x05);
+    write(ADS1299_REGISTER_CH8SET, 0x05);
+    command(ADS1299_COMMAND_RDATAC);
+
+    uint8_t sensorCheck = _sensorID & 0x1F;
     if (sensorCheck == ADS1299_ID || sensorCheck == ADS1299_6_ID  || sensorCheck == ADS1299_4_ID ) { return true; }
     
+    delete(testChannels);
+
     return false;
 
 }
@@ -126,10 +144,40 @@ uint8_t SleepSure_ADS1299::readWrite(uint8_t reg, uint8_t data, uint8_t cmd)
 
     _spi->transfer(ADS1299_COMMAND_RDATAC);
     digitalWrite(_cs, HIGH);
-    _spi->endTransaction(); // release the SPI bus
+    _spi->endTransaction();
 
     return value;
 }
+
+bool SleepSure_ADS1299::readChannels(int* values, int8_t len)
+{
+    _spi->beginTransaction(SPISettings(ADS1299_SPI_FREQ, MSBFIRST, SPI_MODE1));
+    digitalWrite(_cs, LOW);
+    while(!digitalRead(_drdy));
+
+    for(int i=0; i<len +1; i++)
+    {
+        values[i] = readChannel();
+    }
+
+    digitalWrite(_cs, HIGH);
+    _spi->endTransaction();
+
+    return true;
+}
+
+int SleepSure_ADS1299::readChannel()
+{
+    int value = 0x00;
+    for (int i=0; i<3; i++)
+    {
+        value = (value << 8) | _spi->transfer(0x00);
+    }
+    Serial.println(value);
+    return value;
+}
+
+
 /**
  * @brief Public getter for _sensorID
  * 
