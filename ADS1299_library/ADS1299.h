@@ -71,7 +71,7 @@ enum {
     ADS1299_4_ID = 0x1C,
     ADS1299_6_ID = 0x1D,
     ADS1299_ID = 0x1E,
-    ADS1299_SPI_FREQ = 4000000
+    ADS1299_SPI_FREQ = 1000000
 };
 
 /*
@@ -88,7 +88,7 @@ class SleepSure_ADS1299
         uint8_t command(uint8_t);
         uint8_t read(uint8_t reg);
         void write(uint8_t reg, uint8_t data);
-        bool readChannels(int* values, int8_t len);
+        bool readChannels(int *values, int8_t len);
         uint8_t spixfer(uint8_t x);
         uint8_t getID();
         
@@ -106,7 +106,6 @@ class SleepSure_ADS1299
         uint8_t _sensorID;
 
         uint8_t readWrite(uint8_t reg, uint8_t data, uint8_t cmd);
-        int readChannel();
 };
 
 #endif

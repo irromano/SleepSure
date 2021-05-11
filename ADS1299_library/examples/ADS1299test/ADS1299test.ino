@@ -1,6 +1,7 @@
 /***************************************************************************
  * Designed to test the ADS1299 bridge with an ESP32 processor. 
- * Tested and developed on an Adafruit Huzzah32.
+ * Tested and developed on an Adafruit Huzzah32. Output of all channels is
+ * printed out to Serial Port.
  * 
  * Author: Ian Romano
  ***************************************************************************/
@@ -24,7 +25,7 @@ void setup()
     Serial.begin(115200);
     while(!Serial);
     Serial.println("ADS1299 test");
-    
+
     values = new int[CHANNELS];
 
     bool pass = ads.begin();
@@ -34,6 +35,7 @@ void setup()
     }
     Serial.print("Detected sensor ID: ");
     Serial.println(ads.getID(), 16);
+    Serial.println("ADS1299 setup complete");
 }
 
 
@@ -41,17 +43,22 @@ void loop()
 { 
     ads.readChannels(values, CHANNELS);
     printValues();
-    delay(100);
 }
 
 void printValues()
 {
-  for(int i=1; i<CHANNELS +1; i++)
-  {
+
+    for(int i=0; i<CHANNELS; i++)
+    {
         Serial.print("Channel ");
+        double mVolt =  (0.000298 * values[i]) + 2500;
         Serial.print(i);
         Serial.print(": ");
-        Serial.println(values[i]);
-  }
+        Serial.println(mVolt);
+        Serial.print(" ");
+    }
+    
 
 }
+
+double mVolt(int byte3) { return 0.000298 * byte3 + 2500; }
