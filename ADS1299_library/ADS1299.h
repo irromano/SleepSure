@@ -1,6 +1,6 @@
 /***************************************************************************
  * ADS1299 SPI Bridge
- * This Arduino library is mean to bridge a TI ADS1299 chip with an Esspriff
+ * This Arduino library is meant to bridge a TI ADS1299 chip with an Esspriff
  * ESP32 microcontroller. It uses SPI to slave the ADS to the ESP32 and
  * allows signals to be recieved.
  * 
